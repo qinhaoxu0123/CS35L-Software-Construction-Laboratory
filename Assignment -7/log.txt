@@ -1,0 +1,40 @@
+
+Making sure the version is 8.22
+$ sort - - version 
+
+Generating a file that contains 10M random-precision floating input point number,
+1.
+$ od -An -t fD -N 80000000 < /dev/urandom | 
+> tr -s [:blank:] '\n' |
+> sed '/^$/d' > random.txt
+
+Performance Comparison 
+a. no — parallel option 
+$ time -p sort -g random.txt > /dev/null
+real 40.64
+user 216.58
+sys 0.54
+
+b. 1 thread
+[classqin@lnxsrv07 ~/lab7]$ time -p sort -g --parallel=1 random.txt > /dev/null
+real 183.46
+user 183.11
+sys 0.34
+
+c. 2 threads
+[classqin@lnxsrv07 ~/lab7]$ time -p sort -g --parallel=2 random.txt > /dev/null
+real 98.58
+user 188.57
+sys 0.37
+
+d. 4 threads
+[classqin@lnxsrv07 ~/lab7]$ time -p sort -g --parallel=4 random.txt > /dev/null
+real 57.67
+user 196.92
+sys 0.43
+
+e. 8 threads
+[classqin@lnxsrv07 ~/lab7]$ time -p sort -g --parallel=8 random.txt > /dev/null
+real 36.47
+user 199.40
+sys 0.51
