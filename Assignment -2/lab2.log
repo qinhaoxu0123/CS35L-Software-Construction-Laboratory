@@ -1,0 +1,113 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1504
+{\fonttbl\f0\froman\fcharset0 Times-Roman;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;\red0\green0\blue0;\red255\green255\blue255;
+}
+{\*\expandedcolortbl;\csgray\c100000;\cssrgb\c0\c0\c0;\csgenericrgb\c0\c0\c0;\csgenericrgb\c100000\c100000\c100000;
+}
+\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 Type in command \'92locale\'92 to check the shell command locale, and then the output LC_CTYPE=\'91en-us\'92,  we need to change the LC_CTYPE by typing \'91export LC_ALL=\'91C\'92\'92 and then check it again.\
+\
+Type in command /usr/share/dict/words > words\
+New file \'91words\'92 has been created & contains sorted words\
+\
+Wget http://web.cs.ucla.edu/classes/fall16/cs35L/assign/assign2.html to get the html file\
+\
+Running the commands:\
+1.cat assign2.html | \expnd0\expndtw0\kerning0
+tr -c 'A-Za-z' '[\\n*]'  or  \kerning1\expnd0\expndtw0  \expnd0\expndtw0\kerning0
+tr -c 'A-Za-z' '[\\n*]'  < assign2.html\
+either way works perfectly fine. This command filters all the words that contain alphabet \'91A-Z\'92 and \'91a-z\'92 and then replace non-alphabet chars with new lines.\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \kerning1\expnd0\expndtw0 2.cat assign2.html | \expnd0\expndtw0\kerning0
+tr -cs 'A-Za-z' '[\\n*]' \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 one word per line without emptied lines \
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \kerning1\expnd0\expndtw0 3.cat assign2.html | \expnd0\expndtw0\kerning0
+tr -cs 'A-Za-z' '[\\n*]'  | sort\
+sorted all the word in aphalbetical order \
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \kerning1\expnd0\expndtw0 4.cat assign2.html | \expnd0\expndtw0\kerning0
+tr -cs \'91A-Za-z' '[\\n*]'  | sort -u\
+aphabetical order without duplication \
+\
+\kerning1\expnd0\expndtw0 5.cat assign2.html | \expnd0\expndtw0\kerning0
+tr -cs 'A-Za-z' '[\\n*]'  | sort -u | comm - words\
+column 1:  Words that are unique to sorted assign2.html\
+column 2:  Words that are unique to \'91words\'92\
+column 3:  Words share by both assign2.html and words \
+\
+\kerning1\expnd0\expndtw0 6.cat assign2.html | \expnd0\expndtw0\kerning0
+tr -cs 'A-Za-z' '[\\n*]'  | sort -u | comm -23 - words\
+This command is very similar to the previous command, except it does not include column 2 and 3.\
+so it only shows the column1 words that are unique to sorted assign2.html\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+Type in wget mauimapp.com/moolelo/hwnwdseng.htm to get the htm file \
+\
+Buildwords script \
+\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+\cf3 \cb4 \kerning1\expnd0\expndtw0 \CocoaLigature0 #!/bin/bash                                                                     \
+\
+grep "<td>.*</td>" |\
+sed "s/<[^>]//g' |                                                              \
+sed \'93s/\\\'92/\'91/g\'94 |\
+sed '/^\\s*$/d' |\
+tr '[:upper:]' '[:lower:]' |\
+sed -n 'g;n;p' |\
+sed 's/^\\s*//g'	|\
+sed 's/[, ]/\\n/g' |\
+sed "/[^p^k^'^m^n^w^l^h^a^e^i^o^u]/d" |\
+sort -u\
+#select all lines with <td>...<td>                                              \
+#remove all the line that have html tags                                        \
+#replace okina with apostrophe \
+#remove blank new lines \
+#coverts upper cases to lower cases \
+#remove every even lines \
+#remove leading whitespace \
+#replaces commas and spaces with new lines \
+#remove words that do not contains the following cases \
+#sort words, display\
+\
+\'97\'97\
+In order to run ./buildwords <\cf0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 hwnwdseng.htm> hwords \
+Change the permission for the executable for buildwords: chmod u+x buildwords\
+\
+Command for Hawaiian spell checker:\
+\cf3 \cb4 \kerning1\expnd0\expndtw0 \CocoaLigature0 cat assign2.html | tr -cs 'A-Za-z' '[\\n*]' | tr '[:upper:]' '[:lower:]' | sort -u | comm -23 - hwords\cf0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \
+This command shows all the words that are in the file asisgn2.html but not in the Hawaiian.\
+\
+Command for misspelled in English:\
+\cf3 \cb4 \kerning1\expnd0\expndtw0 \CocoaLigature0 cat assign2.html | tr -cs 'A-Za-z' '[\\n*]' | tr '[:upper:]' '[:lower:]' | sort -u | comm -23 - words | wc -l\
+This command shows 39 words \
+\
+Command for misspelled in Hawaiian:\
+cat assign2.html | tr -cs 'A-Za-z' '[\\n*]' | tr '[:upper:]' '[:lower:]' | sort -u | comm -23 - hwords | wc -l\
+There are 409 words \
+\
+Command for misspelled words in both English and Hawaiian:\
+cat assign2.html | tr -cs 'A-Za-z' '[\\n*]' | tr '[:upper:]' '[:lower:]' | sort -u | comm -23 - hwords | comm -23 -words | wc -1\
+there are 38 words\
+\
+Command for misspelled words in English but not in Hawaiian \
+there 371 words \
+\
+Command for misspelled words in Hawaiian but not in English\
+Halau , lau and wiki\
+\cf0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \
+
+\fs26 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+\
+}
