@@ -1,0 +1,147 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1504
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fnil\fcharset0 AndaleMono;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;\red255\green255\blue255;\red47\green255\blue18;
+\red0\green0\blue0;}
+{\*\expandedcolortbl;\csgray\c100000;\csgenericrgb\c0\c0\c0;\csgenericrgb\c100000\c100000\c100000;\cssrgb\c15686\c99608\c7843;
+\csgray\c0\c90000;}
+\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 \
+First, I write tr2b.c that uses getchar and putchar to transliterate bytes and I also write tr2u.c that uses read and write to transliterate bytes.  \
+Compiled the program:\
+gcc -std=c99 -o tr2b tr2b.c \
+gcc -std=c99 -o tr2u tr2u.c\
+\
+Randomly generate 5000000 bytes and then put it into a file:\
+head - - bytes = 5000000 /dev/urandom  > input.txt \
+\
+I also write a c++ program that generate a 5MB files.\
+\
+#include<iostream>\
+using namespace std;\
+\
+int main()\
+\{\
+for( int i =0;  i<5000000;  i++)\
+\{\
+cout < \'91a\'92;\
+\}\
+\}\
+\
+g++ -o char char.cpp\
+./char >  input_char.txt\
+\
+3. strace to compare sys calls:\
+a. copy one file to another:\
+$ strace -c ./tr2b \'91a\'92 \'91x\'92 < input_char.txt > output_tr2b\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+
+\f1 \cf2 \cb3 \CocoaLigature0 % time     seconds  usecs/call     calls    errors syscall\
+------ ----------- ----------- --------- --------- ----------------\
+ 37.76    0.000128           2        77           write\
+ 19.47    0.000066           1        79           read\
+ 14.16    0.000048           5         9           mmap\
+  7.96    0.000027           7         4           mprotect\
+  5.01    0.000017           4         4           fstat\
+  4.42    0.000015           8         2           open\
+  2.95    0.000010          10         1           munmap\
+  2.36    0.000008           4         2           close\
+  2.06    0.000007           7         1         1 access\
+  1.47    0.000005           5         1           execve\
+  1.18    0.000004           4         1           brk\
+  1.18    0.000004           4         1           arch_prctl\
+------ ----------- ----------- --------- --------- ----------------\
+100.00    0.000339                   182         1 total
+\f0 \cf0 \cb1 \CocoaLigature1 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+$ strace -c ./tr2u \'91a\'92 \'91x\'92 < input_char.txt > output_tr2u\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+
+\f1 \cf2 \cb3 \CocoaLigature0  time     seconds  usecs/call     calls    errors syscall\
+------ ----------- ----------- --------- --------- ----------------\
+ 55.55    5.790087           1   5000000           write\
+ 44.45    4.632408           1   5000002           read\
+  0.00    0.000041           6         7           mmap\
+  0.00    0.000027           7         4           mprotect\
+  0.00    0.000014           7         2           open\
+  0.00    0.000010          10         1           munmap\
+  0.00    0.000008           4         2           close\
+  0.00    0.000008           4         2           fstat\
+  0.00    0.000007           7         1         1 access\
+  0.00    0.000005           5         1           execve\
+  0.00    0.000004           4         1           brk\
+  0.00    0.000004           4         1           arch_prctl\
+------ ----------- ----------- --------- --------- ----------------\
+100.00   10.422623              10000024         1 total
+\f0 \cf0 \cb1 \CocoaLigature1 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 since it is unbuffered, it takes long time to get the detail chart like the previous call. Obviously, we can conclude that the buffered tr2b is way faster than the unbuffered tr2u\
+\
+b. copy one file to the terminal:\
+$ strace -c ./tr2b \'91a\'92 \'91x\'92 < input_char.txt\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+
+\f1 \cf2 \cb3 \CocoaLigature0 % time     seconds  usecs/call     calls    errors syscall\
+------ ----------- ----------- --------- --------- ----------------\
+ 91.67    0.004051           1      4883           write\
+  3.73    0.000165           2        79           read\
+  1.52    0.000067           7         9           mmap\
+  0.86    0.000038          10         4           mprotect\
+  0.52    0.000023           6         4           fstat\
+  0.48    0.000021          11         2           open\
+  0.29    0.000013          13         1           munmap\
+  0.29    0.000013          13         1         1 access\
+  0.25    0.000011           6         2           close\
+  0.16    0.000007           7         1           execve\
+  0.11    0.000005           5         1           brk\
+  0.11    0.000005           5         1           arch_prctl\
+------ ----------- ----------- --------- --------- ----------------\
+100.00    0.004419                  4988         1 total\cf4 \cb5 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0 \cf0 \cb1 \CocoaLigature1 \
+$ strace -c ./tr2u \'91a\'92 \'91x\'92 < input_char.txt\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+
+\f1 \cf2 \cb3 \CocoaLigature0 % time     seconds  usecs/call     calls    errors syscall\
+------ ----------- ----------- --------- --------- ----------------\
+ 55.07    5.860600           1   5000000           write\
+ 44.93    4.780930           1   5000002           read\
+  0.00    0.000039           6         7           mmap\
+  0.00    0.000026           7         4           mprotect\
+  0.00    0.000014           7         2           open\
+  0.00    0.000010          10         1           munmap\
+  0.00    0.000007           4         2           close\
+  0.00    0.000007           4         2           fstat\
+  0.00    0.000007           7         1         1 access\
+  0.00    0.000006           6         1           execve\
+  0.00    0.000004           4         1           brk\
+  0.00    0.000004           4         1           arch_prctl\
+------ ----------- ----------- --------- --------- ----------------\
+100.00   10.641654              10000024         1 total\
+\
+The buffered version has less systems call in compare to the unbuffered version. And we also notice that copy to terminal exhibits much more systems call.\
+\
+Test time:\
+tr2b(buffered version):\
+[classqin@lnxsrv07 ~/lab6]$ time ./tr2b 'abc' 'def' < input_c.txt > output_tr2b\
+\
+real	0m0.186s\
+user	0m0.124s\
+sys	0m0.005s\
+\
+tr2u(unbuffered version):\
+[classqin@lnxsrv07 ~/lab6]$ time ./tr2u 'abc' 'def' < input_c.txt > output_tr2u\
+\
+real	0m6.526s\
+user	0m0.282s\
+sys	0m6.201s\
+\
+In this case, we can clearly see the difference between buffered and unbuffered version in terms of time real time performance. 
+\f0 \cf0 \cb1 \CocoaLigature1 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+\
+}
