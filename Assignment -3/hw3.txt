@@ -1,0 +1,31 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1504
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;\csgray\c100000;}
+\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 Q1:\
+Brady removed \'93case_long_ios_time_style:\'94 because there was a goto statement that went to this label. No, no need to remove this line, because the goto statement was removed, thus that label would never be referenced.\
+\
+Q2:\
+Problem:\
+.Date format is very different in some countries \
+.inconsistencies in other programs that display dates in different format.\
+\
+Q3:\
+use wget to get the landline.py\
+command: python randline.py /dev/null\
+output: IndexError: list index out of range \
+The reason for this error is because the randline.py  script attempts to access elements of the file using arguments in brackets, and no elements at that index \
+\
+Q4\
+output:\
+File \'93./randline.py, line 65\
+except I0Error as (errno, strerror):\
+                             ^\
+SyntaxError : invalid syntax\
+\
+python3 has a different error syntax.\
+python2 had automatic tuple unpacking  but in python3 the tuple parameter unpacking was removed which causes the error syntax to be different.\
+}
