@@ -1,0 +1,154 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1504
+{\fonttbl\f0\fnil\fcharset0 AndaleMono;}
+{\colortbl;\red255\green255\blue255;\red255\green255\blue255;\red0\green0\blue0;}
+{\*\expandedcolortbl;\csgray\c100000;\csgenericrgb\c100000\c100000\c100000;\csgenericrgb\c0\c0\c0;}
+\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf2 \cb2 \CocoaLigature0 export PATH=/usr/local/cs/bin:$PATH \'91add the extension\'92\
+\cf3 To start the lab, we first need to clone the file diffutils in the new directory by typing the command \'91git clone git://git.savannah.gnu.org/diffutils.git\'92 \
+we extract git log from the diffutilis into the git-log.txt by typing \'91git log > git-log.txt\'92\
+and then we can also extract git tag into git-tags.txt by typing \'91git tag > git-tags.txt\'92\
+and then we use the emacs to find the target we needed and then extract the commit ID for that target after git show command \'91git show 62ca21c8c1a5aa3488589dcb191a4ef04ae9ed4f > quote_patch.txt\'92 to put it in the quote_patch.txt\
+we can check out v3.0 by using \'91git checkout v3.0\'92\
+finally we need to use the patch command to apply quote_patch.txt to v3.0 by typing \'91patch -p1 < quote_patch.txt\'92\
+After applying the patching, we will need to specify which file we want to target on, however we can get the result by hitting the RETURN until we get the following result:\
+Hunk #1 succeeded at 36 with fuzz 1.\
+Hunk #4 succeeded at 185 (offset -6 lines).\
+Hunk #5 succeeded at 231 (offset -6 lines).\
+Hunk #6 succeeded at 257 (offset -6 lines).\
+Hunk #7 succeeded at 269 (offset -6 lines).\
+Hunk #8 succeeded at 364 (offset -6 lines).\
+Hunk #9 succeeded at 377 (offset -6 lines).\
+patching file src/context.c\
+Hunk #1 succeeded at 159 (offset 1 line).\
+Hunk #2 succeeded at 289 (offset 1 line).\
+Hunk #3 succeeded at 393 with fuzz 2 (offset 1 line).\
+Hunk #4 succeeded at 431 (offset 1 line).\
+Hunk #5 succeeded at 459 (offset 1 line).\
+patching file src/diff.c\
+Hunk #1 succeeded at 40 with fuzz 2 (offset -2 lines).\
+Hunk #2 succeeded at 57 (offset -2 lines).\
+Hunk #3 succeeded at 92 (offset -2 lines).\
+Hunk #4 succeeded at 330 (offset -10 lines).\
+Hunk #5 succeeded at 505 (offset -10 lines).\
+Hunk #6 succeeded at 534 (offset -10 lines).\
+Hunk #7 succeeded at 585 (offset -14 lines).\
+Hunk #8 succeeded at 744 (offset -14 lines).\
+Hunk #9 succeeded at 826 (offset -14 lines).\
+Hunk #10 FAILED at 876.\
+Hunk #11 FAILED at 906.\
+Hunk #12 FAILED at 942.\
+Hunk #13 succeeded at 960 with fuzz 2 (offset -29 lines).\
+Hunk #14 succeeded at 1159 with fuzz 2 (offset -32 lines).\
+3 out of 14 hunks FAILED -- saving rejects to file src/diff.c.rej\
+patching file src/diff.h\
+Hunk #2 succeeded at 126 with fuzz 2 (offset -13 lines).\
+Hunk #3 succeeded at 202 (offset -13 lines).\
+patching file src/diff3.c\
+Hunk #1 succeeded at 35 (offset 1 line).\
+Hunk #2 succeeded at 159 (offset 1 line).\
+Hunk #3 succeeded at 316 (offset 1 line).\
+Hunk #4 succeeded at 351 (offset 1 line).\
+Hunk #5 succeeded at 412 (offset 1 line).\
+Hunk #6 FAILED at 433.\
+Hunk #7 succeeded at 460 with fuzz 2 (offset -18 lines).\
+Hunk #8 succeeded at 1275 (offset -18 lines).\
+Hunk #9 succeeded at 1475 (offset -18 lines).\
+1 out of 9 hunks FAILED -- saving rejects to file src/diff3.c.rej\
+patching file src/dir.c\
+Hunk #1 succeeded at 84 (offset -1 lines).\
+Hunk #2 succeeded at 125 (offset -1 lines).\
+Hunk #3 succeeded at 154 (offset -1 lines).\
+Hunk #4 succeeded at 234 (offset -1 lines).\
+patching file src/ifdef.c\
+patching file src/io.c\
+patching file src/sdiff.c\
+Hunk #2 succeeded at 92 (offset 1 line).\
+Hunk #3 succeeded at 175 (offset 23 lines).\
+Hunk #4 succeeded at 230 (offset 17 lines).\
+Hunk #5 succeeded at 286 (offset 17 lines).\
+Hunk #6 succeeded at 572 (offset 13 lines).\
+Hunk #7 succeeded at 747 (offset 41 lines).\
+patching file src/side.c\
+patching file src/system.h\
+Hunk #2 succeeded at 105 (offset 6 lines).\
+patching file src/util.c\
+Hunk #4 succeeded at 190 with fuzz 2.\
+Hunk #8 succeeded at 650 (offset -27 lines).\
+patching file tests/help-version\
+Hunk #1 succeeded at 75 (offset 1 line).\
+Hunk #2 succeeded at 85 (offset 1 line).\
+Hunk #3 succeeded at 96 (offset 1 line).\
+Hunk #4 succeeded at 108 (offset 1 line).\
+Hunk #5 succeeded at 140 (offset 1 line).\
+Hunk #6 succeeded at 188 (offset 1 line).\
+we can use \'91git status\'92 to know exactly what happen:\
+HEAD detached at v3.0\
+# Changes not staged for commit:\
+#   (use "git add <file>..." to update what will be committed)\
+#   (use "git checkout -- <file>..." to discard changes in working directory)\
+#\
+#	modified:   NEWS\
+#	modified:   README\
+#	modified:   TODO\
+#	modified:   doc/diagmeet.note\
+#	modified:   ms/config.bat\
+#	modified:   ms/config.site\
+#	modified:   po/en.po\
+#	modified:   src/analyze.c\
+#	modified:   src/cmp.c\
+#	modified:   src/context.c\
+#	modified:   src/diff.c\
+#	modified:   src/diff.h\
+#	modified:   src/diff3.c\
+#	modified:   src/dir.c\
+#	modified:   src/ifdef.c\
+#	modified:   src/io.c\
+#	modified:   src/sdiff.c\
+#	modified:   src/side.c\
+#	modified:   src/system.h\
+#	modified:   src/util.c\
+#	modified:   tests/help-version\
+#\
+# Untracked files:\
+#   (use "git add <file>..." to include in what will be committed)\
+#\
+#	NEWS.orig\
+#	README-hacking.orig\
+#	README-hacking.rej\
+#	README.orig\
+#	README.rej\
+#	cfg.mk.orig\
+#	cfg.mk.rej\
+#	git-log.txt\
+#	git-tags.txt\
+#	ms/config.site.orig\
+#	quote_patch.txt\
+#	src/cmp.c.orig\
+#	src/context.c.orig\
+#	src/diff.c.orig\
+#	src/diff.c.rej\
+#	src/diff.h.orig\
+#	src/diff3.c.orig\
+#	src/diff3.c.rej\
+#	src/dir.c.orig\
+#	src/sdiff.c.orig\
+#	src/system.h.orig\
+#	src/util.c.orig\
+#	tests/help-version.orig \
+We begin to process modified files in emacs and use vc-diff, vc-revert and diff-apply-hunk, then we can use vc-diff(c-x, v=) and then apply the vc-revert(v-x v u)\
+We need to go through the diff file and apply diff-apply-hunk by going to the relevant hunks and then apply c-u c-c c-a to undo the hunk for the the files that have the .c files extension \
+when we git status, we noticed that we have all the untracked files, we can use git clean -f to clean all the files \
+we can generate the new patch file with all the modified files using : git diff > quote-3.0-patch.txt\
+after done clean file and have the new patch \'91quote-3.0-patch\'92\
+we can build diffutils using the following command :\
+	git submodule foreach git pull origin master \
+	git commit -m \'91build: fix gnulib submodule\'92\
+	./configure \'97quiet #[enable-gcc-warnings] [#]\
+	make \
+after running these commands, diff function will fix the issue.\
+\
+\
+\
+}
